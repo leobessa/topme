@@ -5,9 +5,65 @@ require 'erb'
 
 module Guillotine
   class Service
-    def check_host(url)
-      if url.to_s !~ /^bikerace:\/\/newgame\?id=(.*)&name=(.*)$/
+    # Public: Maps a URL to a shortened code.
+    #
+    # url  - A String or Addressable::URI URL to shorten.
+    # code - Optional String code to use.  Defaults to a random String.
+    #
+    # Returns 201 with the Location pointing to the code, or 422.
+    def create(url, code = nil)
+      uri = Addressable::URI.parse(url)
+
+      return resp if resp = check_uri(uri)
+      return code_resp if code_resp = check_code(code)
+
+      begin
+        if code = @db.add(uri.to_s, code)
+          [201, {"Location" => code}]
+        else
+          [422, {}, "Unable to shorten #{url}"]
+        end
+      rescue DuplicateCodeError => err
+        [422, {}, err.to_s]
+      end
+    end
+
+    def get(code)
+      if url = @db.find(code)
+        [302, {"Location" => URI.unescape(url)}]
+      else
+        [404, {}, "No url found for #{code}"]
+      end
+    end
+
+    def check_code(code)
+      if code && code.to_s !~ /^[a-zA-Z\d]*$/
+        [422, {}, "Invalid code: #{code}"]
+      end
+    end
+    # Checks to see if the input URL is using a valid host.  You can constrain
+    # the hosts with the `required_host` argument of the Service constructor.
+    #
+    # url - An Addressible::URI instance to check.
+    #
+    # Returns a 422 Rack::Response if the host is invalid, or nil.
+    def check_uri(uri)
+      if uri.to_s !~ /^bikerace:\/\/newgame\?id=(.*)&name=(.*)$/
         [422, {}, "Invalid url: #{url}"]
+      end
+    end
+
+  end
+  module Adapters
+    class Adapter
+      # Parses and sanitizes a URL.
+      #
+      # url - A String URL.
+      #
+      # Returns an Addressable::URI.
+      def parse_url(url)
+        url.gsub! /(\#).*/, ''
+        Addressable::URI.parse url
       end
     end
   end
@@ -32,7 +88,7 @@ module Bikeraceme
     end
 
     get '/' do
-      "Shorten all the URLs"
+      erb :index
     end
 
     if ENV['TWEETBOT_API']
