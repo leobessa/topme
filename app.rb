@@ -6,10 +6,8 @@ require 'erb'
 module Guillotine
   class Service
     def check_host(url)
-      if url.scheme !~ /^bikerace$/
+      if url.to_s !~ /^bikerace:\/\/newgame\?id=(.*)&name=(.*)$/
         [422, {}, "Invalid url: #{url}"]
-      else
-        @host_check.call url
       end
     end
   end
