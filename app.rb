@@ -1,6 +1,7 @@
 require 'guillotine'
 require 'active_record'
 require 'yaml'
+require 'erb'
 
 module Guillotine
   class Service
@@ -17,7 +18,7 @@ end
 module Bikeraceme
   class App < Guillotine::App
 
-    dbconfig = YAML::load_file('config/database.yml')[ENV['RACK_ENV'] || 'development']
+    dbconfig = YAML::load(ERB.new(File.read('config/database.yml')).result)[ENV['RACK_ENV'] || 'development']
     ActiveRecord::Base.establish_connection(dbconfig)  
     set :dbconfig, dbconfig
 
