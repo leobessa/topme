@@ -1,0 +1,11 @@
+development:
+  adapter: sqlite3
+  database: db/bikeraceme_dev.sqlite
+  
+test:
+  adapter: sqlite3
+  database: db/bikeraceme_test.sqlite
+
+production:
+  adapter: sqlite3
+  database: db/bikeraceme_prod.sqlite
