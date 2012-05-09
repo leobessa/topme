@@ -2,6 +2,7 @@ require 'guillotine'
 require 'active_record'
 require 'yaml'
 require 'erb'
+require 'json'
 
 module Guillotine
   class Service
@@ -19,6 +20,7 @@ module Guillotine
       code_resp = check_code(code)
       return code_resp if code_resp
 
+      code = code.downcase if code
       begin
         if code = @db.add(uri.to_s, code)
           [201, {"Location" => code}]
@@ -87,6 +89,22 @@ module Bikeraceme
       unless request.request_method == "GET"
         protected!
       end
+    end
+
+    POST_BODY  = 'rack.input'.freeze
+
+    post "/" do
+      if env['CONTENT_TYPE'] =~ %r{application/json}i
+        json = JSON.parse(env[POST_BODY].read)
+        params[:url] = json["url"]
+        params[:code] = json["code"]
+      end
+      status, head, body = settings.service.create(params[:url], params[:code])
+      if loc = head['Location']
+        head['Location'] = File.join(request.url, loc)
+      end
+
+      [status, head, simple_escape(body)]
     end
 
     get '/' do
