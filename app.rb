@@ -14,8 +14,10 @@ module Guillotine
     def create(url, code = nil)
       uri = Addressable::URI.parse(url)
 
-      return resp if resp = check_uri(uri)
-      return code_resp if code_resp = check_code(code)
+      resp = check_uri(uri)
+      return resp if resp
+      code_resp = check_code(code)
+      return code_resp if code_resp
 
       begin
         if code = @db.add(uri.to_s, code)
