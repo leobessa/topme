@@ -49,7 +49,7 @@ module Guillotine
     # Returns a 422 Rack::Response if the host is invalid, or nil.
     def check_uri(uri)
       if uri.to_s !~ /^bikerace:\/\/newgame\?id=(.*)&name=(.*)$/
-        [422, {}, "Invalid url: #{url}"]
+        [422, {}, "Invalid url: #{uri}"]
       end
     end
 
