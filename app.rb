@@ -1,8 +1,7 @@
 require 'guillotine'
-require 'active_record'
-require 'yaml'
 require 'erb'
 require 'json'
+require './lib/guillotine/adapters/simple_db_adapter'
 
 module Guillotine
   class Service
@@ -76,12 +75,7 @@ end
 module Bikeraceme
   class App < Guillotine::App
 
-    dbconfig = YAML::load(ERB.new(File.read('config/database.yml')).result)[ENV['RACK_ENV'] || 'development']
-    ActiveRecord::Base.establish_connection(dbconfig)  
-    set :dbconfig, dbconfig
-
-
-    adapter = Guillotine::Adapters::ActiveRecordAdapter.new dbconfig
+    adapter = Guillotine::Adapters::SimpleDbAdapter.new
     set :service => Guillotine::Service.new(adapter)
 
     # authenticate everything except GETs
