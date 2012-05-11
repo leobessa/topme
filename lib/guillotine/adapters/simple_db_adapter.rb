@@ -4,7 +4,7 @@ unless ENV["AWS_ACCESS_KEY_ID"] && ENV["AWS_SECRET_ACCESS_KEY"]
   abort("missing env vars: please set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY with your app credentials")
 end
 AWS.config(:access_key_id => ENV["AWS_ACCESS_KEY_ID"],:secret_access_key => ENV["AWS_SECRET_ACCESS_KEY"])
-AWS::Record.domain_prefix = "bikerace_#{ENV['AWS_RECORD_DOMAIN_PREFIX'] || ENV['RACK_ENV'] || 'development'}_"
+AWS::Record.domain_prefix = "bikerace_#{ENV['RACK_ENV'] || 'development'}_"
 
 class Url < AWS::Record::Model
   string_attr :code
