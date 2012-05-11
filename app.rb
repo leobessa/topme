@@ -105,19 +105,6 @@ module Bikeraceme
       erb :index
     end
 
-    if ENV['TWEETBOT_API']
-      # experimental (unauthenticated) API endpoint for tweetbot
-      get '/api/create/?' do
-        status, head, body = settings.service.create(params[:url], params[:code])
-
-        if loc = head['Location']
-          "#{File.join("http://", request.host, loc)}"
-        else
-          500
-        end
-      end
-    end
-
     # helper methods
     helpers do
 
