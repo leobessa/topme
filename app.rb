@@ -95,7 +95,7 @@ module Bikeraceme
       end
       status, head, body = settings.service.create(params[:url], params[:code])
       if loc = head['Location']
-        host = request.host.gsub(/$www\./,'')
+        host = request.host.gsub(/www\./,'')
         uri = URI::HTTP.build({:host => host,:path => "/#{loc}"})
         head['Location'] = uri.to_s
       end
