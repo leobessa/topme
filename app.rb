@@ -104,6 +104,7 @@ module Bikeraceme
     end
 
     get '/' do
+      throw(:halt, [404, "Not Found\n"]) if ENV["RACK_ENV"] == "production"
       erb :index
     end
 
