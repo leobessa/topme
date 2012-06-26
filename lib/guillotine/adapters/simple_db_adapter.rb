@@ -3,8 +3,11 @@ require 'aws-sdk'
 unless ENV["AWS_ACCESS_KEY_ID"] && ENV["AWS_SECRET_ACCESS_KEY"]
   abort("missing env vars: please set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY with your app credentials")
 end
+unless ENV["APP_NAME"]
+  abort("missing env vars: please set APP_NAME")
+end
 AWS.config(:access_key_id => ENV["AWS_ACCESS_KEY_ID"],:secret_access_key => ENV["AWS_SECRET_ACCESS_KEY"])
-AWS::Record.domain_prefix = "bikerace_#{ENV['RACK_ENV'] || 'development'}_"
+AWS::Record.domain_prefix = "#{ENV['APP_NAME']}_#{ENV['RACK_ENV'] || 'development'}_"
 
 class Url < AWS::Record::Model
   string_attr :code
