@@ -21,7 +21,6 @@ GEM
     newrelic_rpm (3.3.4.1)
     nokogiri (1.5.2)
     rack (1.4.1)
-    rack-rewrite (1.2.1)
     sinatra (1.2.8)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
@@ -39,5 +38,4 @@ DEPENDENCIES
   aws-sdk
   guillotine
   newrelic_rpm
-  rack-rewrite (~> 1.2.1)
   thin
