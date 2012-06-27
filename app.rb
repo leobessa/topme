@@ -1,7 +1,10 @@
 require 'guillotine'
 require 'erb'
 require 'json'
-require './lib/guillotine/adapters/simple_db_adapter'
+require 'sequel'
+unless ENV["APP_NAME"]
+  abort("missing env vars: please set APP_NAME")
+end
 
 module Guillotine
   class Service
@@ -79,7 +82,8 @@ module Bikeraceme
       require 'newrelic_rpm'
     end
 
-    adapter = Guillotine::Adapters::SimpleDbAdapter.new
+    db = Sequel.connect(ENV['DATABASE_URL'])
+    adapter = Guillotine::Adapters::SequelAdapter.new(db)
     set :service => Guillotine::Service.new(adapter)
 
     # authenticate everything except GETs

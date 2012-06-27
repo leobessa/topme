@@ -2,25 +2,15 @@ GEM
   remote: http://rubygems.org/
   specs:
     addressable (2.2.8)
-    aws-sdk (1.5.5)
-      httparty (~> 0.7)
-      json (~> 1.4)
-      nokogiri (>= 1.4.4)
-      uuidtools (~> 2.1)
     daemons (1.1.8)
     eventmachine (0.12.10)
     guillotine (1.2.1)
       addressable (~> 2.2.6)
       sinatra (~> 1.2.6)
-    httparty (0.8.3)
-      multi_json (~> 1.0)
-      multi_xml
-    json (1.7.3)
-    multi_json (1.3.6)
-    multi_xml (0.5.1)
     newrelic_rpm (3.4.0)
-    nokogiri (1.5.5)
+    pg (0.14.0)
     rack (1.4.1)
+    sequel (3.36.1)
     sinatra (1.2.8)
       rack (~> 1.1)
       tilt (>= 1.2.2, < 2.0)
@@ -29,13 +19,13 @@ GEM
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
     tilt (1.3.3)
-    uuidtools (2.1.2)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  aws-sdk
   guillotine
   newrelic_rpm
+  pg
+  sequel
   thin

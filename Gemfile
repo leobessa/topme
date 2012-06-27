@@ -2,5 +2,6 @@ source :rubygems
 
 gem "guillotine"
 gem "thin"
-gem "aws-sdk"
+gem "sequel"
+gem "pg"
 gem 'newrelic_rpm'
