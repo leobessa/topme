@@ -75,6 +75,10 @@ end
 module Bikeraceme
   class App < Guillotine::App
 
+    configure :production, :staging do
+      require 'newrelic_rpm'
+    end
+
     adapter = Guillotine::Adapters::SimpleDbAdapter.new
     set :service => Guillotine::Service.new(adapter)
 
