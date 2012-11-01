@@ -22,7 +22,8 @@ module Guillotine
       code = code.downcase if code
       begin
         if code = @db.add(uri.to_s, code)
-          [201, {"Location" => code}]
+          headers = {"Location" => code}
+          [201, headers, headers.to_json]
         else
           [422, {}, "Unable to shorten #{url}"]
         end
@@ -33,7 +34,8 @@ module Guillotine
 
     def get(code)
       if url = @db.find(code)
-        [302, {"Location" => URI.unescape(url)}]
+        headers = {"Location" => URI.unescape(url)}
+        [302, headers, headers.to_json]
       else
         [404, {}, "No url found for #{code}"]
       end
