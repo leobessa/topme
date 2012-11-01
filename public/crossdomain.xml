@@ -1,0 +1,4 @@
+<cross-domain-policy>
+  <allow-access-from domain="bike-race-test.herokuapp.com"/>
+  <allow-http-request-headers-from domain="bike-race-test.herokuapp.com" headers="*" secure="false"/>
+</cross-domain-policy>
