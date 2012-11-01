@@ -1,0 +1,12 @@
+#PROD
+heroku create crimewarme-prod --addons newrelic:standard,heroku-postgresql:crane,pgbackups:auto-month -r crimewarme_prod
+heroku sharing:add leobessa@gmail.com -r crimewarme_prod
+
+#STAG
+heroku create crimewarme-stag --addons newrelic:standard,heroku-postgresql:dev -r crimewarme_stag
+heroku sharing:add leobessa@gmail.com --app crimewarme-stag
+git push crimewarme_stag crimewar-prod:master
+heroku run dbmigrate --app crimewarme-stag
+heroku config:add APP_NAME="crimewar" RACK_ENV="staging" --app crimewarme-stag
+heroku domains:add "staging.crimewar.me" --app crimewarme-stag # ... setup DNS server
+curl -i -d "code=leobessa&url=crimewar://newgame?id=1392551135%26name=Leonardo%20Bessa" http://staging.crimewar.me/
