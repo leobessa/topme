@@ -22,8 +22,7 @@ module Guillotine
       code = code.downcase if code
       begin
         if code = @db.add(uri.to_s, code)
-          headers = {"Location" => code}
-          [201, headers, headers.to_json]
+          [201, {"Location" => code}, '']
         else
           [422, {}, "Unable to shorten #{url}"]
         end
@@ -106,7 +105,7 @@ module Bikeraceme
         head['Location'] = uri.to_s
       end
 
-      [status, head, simple_escape(body)]
+      [status, head, head.to_json]
     end
 
     get '/' do
